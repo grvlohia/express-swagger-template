@@ -1,0 +1,65 @@
+openapi: 3.0.0
+info:
+  version: "0.0.1"
+  title: "[Name of API here]"
+
+servers:
+  - url: http://localhost:5500
+    description: DEV
+
+paths:
+  /livenessProbe:
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeartbearResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/HeartbearResponse"
+  /readinessProbe:
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeartbearResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/HeartbearResponse"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    TimestampSchema:
+      type: string
+      format: date-time
+      description: Date time format in UTC, includes milliseconds YYYY-MM-DDThh:mm:ss.vZ
+    HeartbearResponse:
+      type: object
+      properties:
+        timestamp:
+          $ref: "#/components/schemas/TimestampSchema"
+        status:
+          type: string
+          enum:
+            - UP
+            - DOWN
+        error:
+          $ref: "#/components/schemas/Error"
+      required:
+        - timestamp
+        - status
+      xml:
+        name: HeartbearResponse
